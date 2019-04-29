@@ -1,0 +1,24 @@
+{
+  "name": "fauxamazon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "amazon-customer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HeathBanner/FauxAmazon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HeathBanner/FauxAmazon/issues"
+  },
+  "homepage": "https://github.com/HeathBanner/FauxAmazon#readme",
+  "dependencies": {
+    "inquirer": "^6.3.1",
+    "mysql": "^2.17.1",
+    "table": "^5.2.3"
+  }
+}
