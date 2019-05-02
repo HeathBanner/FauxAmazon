@@ -1,5 +1,4 @@
 
-
 var mysql = require('mysql');
 var inquirer = require('inquirer');
 
@@ -17,18 +16,13 @@ var connection = mysql.createConnection({
     database: 'famazon'
 });
 
-connection.connect(function(err) {
-    if (err) throw err;
-    console.log('connected as id ' + connection.threadId + '\n');
-});
-
 function productsForSale(AddToInventoryQueue) {
     connection.query('SELECT * FROM products', function(err, res) {
         productList = []
         for (var index in res) {
             productList.push(res[index].product_name)
         }
-        console.log(res)
+        console.log(productList)
         if (AddToInventoryQueue) {
             AddToInventoryQueue()
         } else {
@@ -118,9 +112,7 @@ function mainMenu() {
         } else if (res.task == firstQuestion[1]) {
             viewLowInventory()
         } else if (res.task == firstQuestion[2]) {
-            
             productsForSale(AddToInventoryQueue)
-            
         } else if (res.task == firstQuestion[3]) {
             inquirer.prompt([
                 {

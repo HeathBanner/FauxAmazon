@@ -1,5 +1,4 @@
 
-
 var mysql = require('mysql');
 var inquirer = require('inquirer');
 
@@ -29,8 +28,6 @@ function displayItems() {
         for (var i = 0; i < res.length; i++) {
             products.push(res[i].product_name)
         }
-        console.log(res);
-
         inquirer.prompt([
             {
                 type: 'list',
@@ -46,38 +43,31 @@ function displayItems() {
         ]).then(function(res) {
             productQuery(res)
         })
-        
     })
 }
 
 function updateProductQuantity(newQuantity, updatedSale) {
     console.log("Updating product quantity...");
-    connection.query("UPDATE products SET ? WHERE ?",
-    [
-        {
-            stock_quantity: newQuantity
-        },
-        {
-            product_sales: updatedSale
-        },
-        {
-            product_name: requestedProduct.product
-        }
-    ],
-    function(err, snap) {
+    
+    connection.query("UPDATE products SET stock_quantity = ?, product_sales = ? WHERE product_name = ?",
+    [newQuantity,
+    updatedSale,
+    requestedProduct.product],
+    
+    
+    function(err, res) {
         if (err) throw err;
-        console.log(snap.affectedRows + " products updated!\n");
+        console.log(res.affectedRows + " products updated!\n");
+        connection.end();
     })
 };
 
 function productQuery(res) {
     console.log("Checking for availability...\n");
     connection.query("SELECT * FROM products", function(err, data) {
-        // if (err) throw err;
-
+        if (err) throw err;
         for (var index in data) {
             if (data[index].product_name == res.item) {
-                
                 requestedProduct = new ProductRequest(
                     data[index].product_name,
                     data[index].price,
@@ -85,32 +75,19 @@ function productQuery(res) {
                     data[index].product_sales,
                     [index]
                 )
-                console.log(requestedProduct.quantity)
             }
         }
         if (requestedProduct.quantity > res.quantity) {
-            
             var updatedSale = res.quantity * requestedProduct.price
-            console.log('Your total: ' + res.quantity * requestedProduct.price);
+            console.log('Your total: $' + res.quantity * requestedProduct.price);
             
-            var newQuantity = parseInt(requestedProduct.quantity) - parseInt(res.quantity);
-            console.log(newQuantity);
-            
+            var newQuantity = parseInt(requestedProduct.quantity) - parseInt(res.quantity);            
             updateProductQuantity(newQuantity, updatedSale)
-            connection.end();
-
         } else if (requestedProduct.quantity <= res.quantity) {
-            
             console.log('We do not have the amount you require in stock. Sorry!');
             connection.end();
         }
     })
 }
 
-connection.connect(function(err) {
-    if (err) throw err;
-    console.log('connected as id ' + connection.threadId + '\n');
-    displayItems();
-})
-
-
+displayItems();

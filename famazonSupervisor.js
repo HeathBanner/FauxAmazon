@@ -41,7 +41,6 @@ function totalProfitCalc() {
 
 function queryBuilder() {
     connection.query('SELECT dept_name FROM departments', function(err, res) {
-        console.log(res)
         for (var i = 0; i < res.length; i++) {
             if (i + 1 == res.length) {
                 salesQuery += 'SELECT SUM(product_sales) AS TotalSales FROM products WHERE dept_name="' + res[i].dept_name + '"';
@@ -51,7 +50,6 @@ function queryBuilder() {
                 salesIndex.push(res[i].dept_name);
             }   
         }
-        console.log('TESTTTTT' + salesQuery)
         productSales()
     })
 }
@@ -62,7 +60,6 @@ function productSales() {
             salesObj[i] = new NewSalesObj(salesIndex[i], response[i].TotalSales)
         }
         totalProfitCalc()
-        console.log(salesObj)
     })
 }
 
