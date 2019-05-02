@@ -9,7 +9,7 @@ The supervisor application will pull all department data and place it into a nic
 # famazon-customer.js
 
 ![Customer Example 1](./imgs/customerMenu.png "Customer Main Menu")
-![Customer Example 2](./imgs/customerPurchases.png "Purchased Item")
+![Customer Example 2](./imgs/customerPurchase.png "Purchased Item")
 
 
 # famazon-manager.js
